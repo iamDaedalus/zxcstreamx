@@ -1171,6 +1171,7 @@ label.checked {
 
   header nav ul {
     flex-direction: row;
+    gap: 10px
   }
   main {
     width: 100%;
