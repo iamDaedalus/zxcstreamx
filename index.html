@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=bespoke-stencil@400,500,700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="/caps.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      /* Loader Styles */
+      .loader {
+        width: 30px;
+        height: 30px;
+        border: 3px solid transparent;
+        border-top: 3px solid red;
+        border-bottom: 3px solid red;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loader-container {
+        position: fixed;
+        top: 4%;
+        right: 2%;
+        z-index: 99;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+        gap: 10px;
+        color: #eee;
+        display: none;
+        transition: 0.2s ease-out;
+        animation: pulse 2s ease-out infinite;
+      }
+      .loader-container.loading {
+        display: flex;
+      }
+      @keyframes pulse {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      .loading-text {
+        background: hsla(0, 0%, 0%, 0.714);
+        padding: 2px 5px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+      }
+    </style>
+
+    <div class="loader-container">
+      <div class="loader"></div>
+      <span class="loading-text"> Fetching data ...</span>
+    </div>
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <a class="icon" href="#search">
+              <i class="bx bx-search"></i>
+              <span class="navText">Search</span>
+              <div class="line"></div>
+            </a>
+          </li>
+          <li>
+            <a class="icon" href="#home">
+              <i class="bx bx-home-alt"></i>
+              <span class="navText">Home</span>
+              <div class="line"></div>
+            </a>
+          </li>
+
+          <li>
+            <a class="icon" href="#movie"
+              ><i class="bx bx-film"></i>
+              <span class="navText">Movie</span>
+              <div class="line"></div>
+            </a>
+          </li>
+          <li>
+            <a class="icon" href="#tv">
+              <i class="bx bx-tv"></i>
+              <span class="navText">TV</span>
+              <div class="line"></div>
+            </a>
+          </li>
+          <li>
+            <a class="icon" href="#watchlist">
+              <i class="bx bx-list-ul"></i>
+              <span class="navText">Watchlist</span>
+              <div class="line"></div>
+            </a>
+          </li>
+          <li>
+            <a class="icon" href="#donate">
+              <i class="bx bx-donate-heart"></i>
+              <span class="navText">Donate</span>
+              <div class="line"></div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div id="contents"></div>
+    </main>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="/fetchshow.js"></script>
+  <script src="/fetchimages.js"></script>
+  <script src="/details.js"></script>
+  <script src="/company.js"></script>
+  <script src="/route.js"></script>
+  <script src="fetchtrailer.js"></script>
+  <script src="fetchactor.js"></script>
+  <script src="/fetchepisode.js"></script>
+  <script src="landing.js"></script>
+  <script src="lazy.js"></script>
+  <script src="watchlist.js"></script>
+  <script src="movie.js"></script>
+  <script src="watchlistFunction.js"></script>
+  <script src="/loader.js"></script>
+  <script src="play.js"></script>
+  <script src="recentFunction.js"></script>
+  <script src="recent.js"></script>
+  <script src="toprated.js"></script>
+  <script src="popular.js"></script>
+  <script src="tv.js"></script>
+  <script src="network.js"></script>
+  <script src="searchFunction.js"></script>
+
+  <script>
+    // for (let i = 0; i < localStorage.length; i++) {
+    //   let key = localStorage.key(i);
+    //   let value = localStorage.getItem(key);
+    //   console.log(`${key}: ${value}`);
+    // }
+
+    loader.classList.add("loading");
+    console.log(loader);
+    window.onload = function () {
+      loader.classList.remove("loading");
+    };
+
+    const apiKey = "47a1a7df542d3d483227f758a7317dff";
+    function company() {
+      const companiesWrapper = document.getElementById("companiesWrapper");
+      companiesWrapper.innerHTML = ""; // Clear previous content
+      const comp = [
+        {
+          networkId: "2949",
+          networkName: "Shudder",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/5/51/Shudder_2017.svg",
+          networkType: "tv",
+        },
+        {
+          networkId: "213",
+          networkName: "Netflix",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png",
+          networkType: "tv",
+        },
+        {
+          networkId: "174",
+          networkName: "AMC",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/1/1d/Amc_logo.svg",
+          networkType: "tv",
+        },
+        {
+          networkId: "5187",
+          networkName: "Tubi",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/d/d1/Tubi_logo_2024_black.svg",
+          networkType: "tv",
+        },
+        {
+          networkId: "6219",
+          networkName: "MGM+",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/4/49/MGM%2B_logo.svg",
+          networkType: "tv",
+        },
+
+        {
+          networkId: "2552",
+          networkName: "Apple TV+",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/2/28/Apple_TV_Plus_Logo.svg",
+          networkType: "tv",
+        },
+        {
+          networkId: "3353",
+          networkName: "Peacock",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/d/d3/NBCUniversal_Peacock_Logo.svg",
+          networkType: "tv",
+        },
+      ];
+
+      async function fetchCompanyImages(networkId) {
+        const endpoint = `https://api.themoviedb.org/3/network/${networkId}?api_key=${apiKey}
+    `;
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        return data.logo_path
+          ? `https://image.tmdb.org/t/p/w500${data.logo_path}`
+          : null;
+      }
+
+      comp.forEach(async (eachcomp) => {
+        const compImg = await fetchCompanyImages(eachcomp.networkId);
+        const companiesSlide = document.createElement("a");
+        companiesSlide.href = `#company/${eachcomp.networkId}`;
+        companiesSlide.className = "companySlide";
+        companiesSlide.classList.add("swiper-slide");
+
+        companiesSlide.innerHTML = `
+                <img class="companyImage lazy" data-src="${compImg}"/>
+                `;
+        companiesWrapper.appendChild(companiesSlide);
+        lazy();
+      });
+
+      const compSwiper = new Swiper("#companiesContainer", {
+        slidesPerView: "auto",
+        spaceBetween: 10,
+        loop: false,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        freeMode: true,
+        keyboard: {
+          enabled: true, // Enables keyboard navigation
+          onlyInViewport: true, // Works only when Swiper is in view
+          pageUpDown: true, // Allows PageUp/PageDown keys for navigation
+        },
+      });
+    }
+
+    function networks() {
+      const networksWrapper = document.getElementById("networksWrapper");
+      networksWrapper.innerHTML = ""; // Clear previous content
+      const comp = [
+        {
+          networkId: "3172",
+          networkName: "Blum House",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/1/17/Blumhouse_Productions_logo.svg",
+          networkType: "movie",
+        },
+        {
+          networkId: "420",
+          networkName: "Marvel Studios",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/1/10/Marvel_Studios_2016_logo.svg",
+          networkType: "movie",
+        },
+        {
+          networkId: "521",
+          networkName: "DreamWorks Animation",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/a/a2/DreamWorks_Pictures.svg",
+          networkType: "movie",
+        },
+
+        {
+          networkId: "4",
+          networkName: "Paramount Pictures",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/1/1b/Paramount_Global_Logo.svg",
+          networkType: "tv",
+        },
+        {
+          networkId: "2348",
+          networkName: "Nickelodeon",
+          logoLink:
+            "https://upload.wikimedia.org/wikipedia/commons/7/7a/Nickelodeon_2009_logo.svg",
+          networkType: "movie",
+        },
+      ];
+
+      async function fetchCompanyImages(networkId) {
+        const endpoint = `https://api.themoviedb.org/3/company/${networkId}?api_key=${apiKey}
+`;
+        const response = await fetch(endpoint);
+        const data = await response.json();
+
+        return data.logo_path
+          ? `https://image.tmdb.org/t/p/w500${data.logo_path}`
+          : null;
+      }
+
+      comp.forEach(async (eachcomp) => {
+        const compImg = await fetchCompanyImages(eachcomp.networkId);
+        console.log(compImg);
+        const companiesSlide = document.createElement("a");
+        companiesSlide.href = `#networks/${eachcomp.networkId}`;
+        companiesSlide.className = "networkSlide";
+        companiesSlide.classList.add("swiper-slide");
+
+        companiesSlide.innerHTML = `
+                <img class="companyImage lazy" data-src="${compImg}"/>
+                `;
+        networksWrapper.appendChild(companiesSlide);
+        lazy();
+      });
+
+      const compSwiper = new Swiper("#networksContainer", {
+        slidesPerView: "auto",
+        spaceBetween: 10,
+        loop: false,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        freeMode: true,
+        keyboard: {
+          enabled: true, // Enables keyboard navigation
+          onlyInViewport: true, // Works only when Swiper is in view
+          pageUpDown: true, // Allows PageUp/PageDown keys for navigation
+        },
+      });
+    }
+  </script>
+</html>
